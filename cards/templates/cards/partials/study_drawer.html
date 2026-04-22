@@ -1,0 +1,60 @@
+<aside id="study-drawer" class="study-drawer" aria-label="Controles de estudo">
+  <button
+    class="drawer-backdrop"
+    type="button"
+    aria-label="Fechar controles"
+    hx-get="{% url 'cards:study_menu' %}?state=closed"
+    hx-target="#study-drawer"
+    hx-swap="outerHTML"
+  ></button>
+  <div class="drawer-panel">
+    <div class="drawer-header">
+      <a class="brand" href="{% url 'cards:dashboard' %}">Flashcards</a>
+      <button
+        class="icon-button"
+        type="button"
+        aria-label="Fechar"
+        hx-get="{% url 'cards:study_menu' %}?state=closed"
+        hx-target="#study-drawer"
+        hx-swap="outerHTML"
+      >×</button>
+    </div>
+
+    <nav class="drawer-nav">
+      <a href="{% url 'cards:dashboard' %}">Home</a>
+      <a href="{% url 'cards:category_list' %}">Categorias</a>
+      <a href="{% url 'cards:flashcard_create' %}">Novo flashcard</a>
+    </nav>
+
+    <form class="drawer-form" method="get" action="{% url 'cards:study' %}">
+      <label>
+        Categoria
+        <select name="category">
+          <option value="">Todas</option>
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+              {{ category.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        Ordem
+        <select name="mode">
+          <option value="smart" {% if mode == "smart" %}selected{% endif %}>Prioridade</option>
+          <option value="random" {% if mode == "random" %}selected{% endif %}>Aleatorio</option>
+          <option value="order" {% if mode == "order" %}selected{% endif %}>Em ordem</option>
+        </select>
+      </label>
+      <button class="button primary" type="submit">Aplicar filtros</button>
+    </form>
+
+    <div class="quick-categories">
+      <p>Categorias rapidas</p>
+      <a href="{% url 'cards:study' %}?mode={{ mode }}">Todas</a>
+      {% for category in categories %}
+        <a href="{% url 'cards:study' %}?category={{ category.id }}&mode={{ mode }}">{{ category.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</aside>

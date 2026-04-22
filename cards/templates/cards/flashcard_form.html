@@ -1,0 +1,15 @@
+{% extends "cards/base.html" %}
+
+{% block title %}Novo flashcard | Flashcards{% endblock %}
+
+{% block content %}
+<section class="form-panel wide">
+  <p class="eyebrow">Cadastro</p>
+  <h1>Novo flashcard</h1>
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button primary" type="submit">Salvar flashcard</button>
+  </form>
+</section>
+{% endblock %}

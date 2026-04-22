@@ -1,0 +1,36 @@
+.venv/
+__pycache__/
+*.py[cod]
+db.sqlite3
+staticfiles/
+.env
+.DS_Store
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Django
+db.sqlite3
+*.log
+media/
+
+# Env
+.env
+.env.*
+
+# Virtualenv
+venv/
+.env/
+ENV/
+
+# Mac
+.DS_Store
+
+# Static files (se coletados)
+staticfiles/
+
+# Railway
+.railway/

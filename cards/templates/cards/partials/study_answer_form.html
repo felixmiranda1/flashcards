@@ -1,0 +1,15 @@
+<form
+  class="focus-answer-form"
+  hx-post="{% url 'cards:submit_answer' flashcard.id %}"
+  hx-target="#study-answer"
+  hx-swap="innerHTML"
+>
+  {% csrf_token %}
+  <input type="hidden" name="category" value="{{ selected_category }}">
+  <input type="hidden" name="mode" value="{{ mode }}">
+  <label class="sr-only" for="{{ form.typed_answer.id_for_label }}">Sua resposta</label>
+  {{ form.typed_answer.errors }}
+  {{ form.typed_answer }}
+  {{ form.started_at }}
+  <button class="button primary focus-submit" type="submit">Ver resposta</button>
+</form>

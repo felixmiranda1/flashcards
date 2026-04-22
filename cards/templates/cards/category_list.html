@@ -1,0 +1,25 @@
+{% extends "cards/base.html" %}
+
+{% block title %}Categorias | Flashcards{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+  <div>
+    <p class="eyebrow">Organizacao</p>
+    <h1>Categorias</h1>
+  </div>
+  <a class="button primary" href="{% url 'cards:category_create' %}">Nova categoria</a>
+</div>
+
+<div class="card-list">
+  {% for category in categories %}
+    <a class="list-card" href="{{ category.get_absolute_url }}">
+      <strong>{{ category.name }}</strong>
+      <span>{{ category.card_count }} flashcards</span>
+      {% if category.description %}<p>{{ category.description }}</p>{% endif %}
+    </a>
+  {% empty %}
+    <p class="empty">Nenhuma categoria cadastrada.</p>
+  {% endfor %}
+</div>
+{% endblock %}

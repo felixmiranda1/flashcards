@@ -1,0 +1,15 @@
+{% extends "cards/base.html" %}
+
+{% block title %}Nova categoria | Flashcards{% endblock %}
+
+{% block content %}
+<section class="form-panel">
+  <p class="eyebrow">Organizacao</p>
+  <h1>Nova categoria</h1>
+  <form method="post" class="stack-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button primary" type="submit">Salvar categoria</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "cards/base.html" %}
+
+{% block title %}Inicio | Flashcards{% endblock %}
+
+{% block content %}
+<section class="dashboard-hero">
+  <div>
+    <p class="eyebrow">Painel de progresso</p>
+    <h1>Seu estudo, com clareza do que avancou e do que merece foco.</h1>
+    <p>{{ insight_message }}</p>
+  </div>
+  <div class="hero-actions">
+    <a class="button primary" href="{% url 'cards:study' %}">Estudar</a>
+    <a class="button" href="{% url 'cards:flashcard_create' %}">Criar flashcard</a>
+  </div>
+</section>
+
+<section class="dashboard-stats">
+  <article class="stat featured">
+    <span>Taxa de acertos</span>
+    <strong>{{ accuracy_rate }}%</strong>
+    <div class="progress-track" aria-hidden="true">
+      <span style="width: {{ accuracy_rate }}%"></span>
+    </div>
+  </article>
+  <article class="stat">
+    <span>Estudos realizados</span>
+    <strong>{{ total_attempts }}</strong>
+  </article>
+  <article class="stat">
+    <span>Acertos</span>
+    <strong>{{ total_correct }}</strong>
+  </article>
+  <article class="stat">
+    <span>Erros</span>
+    <strong>{{ total_wrong }}</strong>
+  </article>
+  <article class="stat">
+    <span>Sequencia atual</span>
+    <strong>{{ current_streak }}</strong>
+    <small>dia{{ current_streak|pluralize }}</small>
+  </article>
+</section>
+
+<section class="content-grid">
+  <div class="dashboard-panel">
+    <div class="section-heading">
+      <h2>Foco por categoria</h2>
+      <a href="{% url 'cards:category_list' %}">Ver todas</a>
+    </div>
+    <div class="card-list">
+      {% for category in category_focus %}
+        <article class="metric-row">
+          <div>
+            <strong>{{ category.name }}</strong>
+            <span>{{ category.attempts_count }} estudos · {{ category.wrong_count }} erros</span>
+          </div>
+          <b>{% if category.accuracy is None %}--{% else %}{{ category.accuracy }}%{% endif %}</b>
+        </article>
+      {% empty %}
+        <p class="empty">Sem dados por categoria ainda. Estude alguns cards para gerar insights.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="dashboard-panel">
+    <div class="section-heading">
+      <h2>Prioridade de revisao</h2>
+      <a href="{% url 'cards:study' %}?mode=smart">Estudar agora</a>
+    </div>
+    <div class="card-list">
+      {% for flashcard in due_cards %}
+        <article class="list-card">
+          <strong>{{ flashcard.question }}</strong>
+          <span>{{ flashcard.category.name }} · score {{ flashcard.study_score }} · {{ flashcard.wrong_count }} erros</span>
+        </article>
+      {% empty %}
+        <p class="empty">Sem cards para revisar.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="content-grid lower-grid">
+  <div class="dashboard-panel">
+    <div class="section-heading">
+      <h2>Ultimos estudos</h2>
+    </div>
+    <div class="card-list">
+      {% for attempt in recent_attempts %}
+        <article class="metric-row">
+          <div>
+            <strong>{{ attempt.flashcard.category.name }}</strong>
+            <span>{{ attempt.flashcard.question|truncatechars:78 }}</span>
+          </div>
+          <b class="{% if attempt.result == 'correct' %}good{% else %}bad{% endif %}">
+            {% if attempt.result == 'correct' %}Acerto{% else %}Erro{% endif %}
+          </b>
+        </article>
+      {% empty %}
+        <p class="empty">Nenhum estudo registrado ainda.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="dashboard-panel calm-panel">
+    <p class="eyebrow">Semana</p>
+    <h2>{{ recent_accuracy }}% de acertos recentes</h2>
+    <p>{{ recent_attempts_count }} tentativa{{ recent_attempts_count|pluralize }} nos ultimos 7 dias, em {{ total_cards }} flashcard{{ total_cards|pluralize }} cadastrados.</p>
+    <a class="button primary" href="{% url 'cards:study' %}?mode=smart">Revisar prioridades</a>
+  </div>
+</section>
+{% endblock %}

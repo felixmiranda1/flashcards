@@ -1,0 +1,35 @@
+{% extends "cards/base.html" %}
+
+{% block title %}Estudar | Flashcards{% endblock %}
+{% block body_class %}study-mode{% endblock %}
+{% block header %}{% endblock %}
+{% block main_class %}study-focus-page{% endblock %}
+
+{% block content %}
+<button
+  class="focus-menu-button"
+  type="button"
+  aria-label="Abrir controles de estudo"
+  hx-get="{% url 'cards:study_menu' %}?category={{ selected_category }}&mode={{ mode }}"
+  hx-target="#study-drawer"
+  hx-swap="outerHTML"
+>☰</button>
+<div id="study-drawer"></div>
+
+<section class="study-focus-shell">
+  {% if total_filtered_cards %}
+    <p class="study-progress">{{ progress_current }} de {{ total_filtered_cards }}</p>
+  {% endif %}
+
+  {% if flashcard %}
+    <article class="focus-card">
+      <h1>{{ flashcard.question }}</h1>
+      <div id="study-answer">
+        {% include "cards/partials/study_answer_form.html" with flashcard=flashcard form=form %}
+      </div>
+    </article>
+  {% else %}
+    <p class="empty">Nenhum flashcard disponivel para este filtro.</p>
+  {% endif %}
+</section>
+{% endblock %}

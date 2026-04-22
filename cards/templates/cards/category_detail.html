@@ -1,0 +1,26 @@
+{% extends "cards/base.html" %}
+
+{% block title %}{{ category.name }} | Flashcards{% endblock %}
+
+{% block content %}
+<div class="section-heading">
+  <div>
+    <p class="eyebrow">Categoria</p>
+    <h1>{{ category.name }}</h1>
+    {% if category.description %}<p>{{ category.description }}</p>{% endif %}
+  </div>
+  <a class="button primary" href="{% url 'cards:study' %}?category={{ category.id }}">Estudar categoria</a>
+</div>
+
+<div class="card-list">
+  {% for flashcard in flashcards %}
+    <article class="list-card">
+      <strong>{{ flashcard.question }}</strong>
+      <span>Prioridade {{ flashcard.priority }} · {{ flashcard.correct_count }} acertos · {{ flashcard.wrong_count }} erros</span>
+      <p>{{ flashcard.answer }}</p>
+    </article>
+  {% empty %}
+    <p class="empty">Nenhum flashcard nesta categoria.</p>
+  {% endfor %}
+</div>
+{% endblock %}

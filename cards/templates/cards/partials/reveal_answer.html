@@ -1,0 +1,26 @@
+<div class="review-comparison">
+  <section class="review-column user-answer">
+    <p>Sua resposta</p>
+    <div>{{ attempt.typed_answer|linebreaks }}</div>
+  </section>
+  <section class="review-column expected-answer">
+    <p>Gabarito</p>
+    <div>{{ flashcard.answer|linebreaks }}</div>
+  </section>
+</div>
+
+<form
+  class="focus-result-actions"
+  hx-post="{% url 'cards:mark_attempt_result' attempt.id %}"
+  hx-target="#study-answer"
+  hx-swap="innerHTML"
+>
+  {% csrf_token %}
+  <input type="hidden" name="category" value="{{ selected_category }}">
+  <input type="hidden" name="mode" value="{{ mode }}">
+  <button class="button success" type="submit" name="result" value="correct">Acertei</button>
+  <button class="button danger" type="submit" name="result" value="wrong">Errei</button>
+  {% if attempt.response_time_seconds is not None %}
+    <span class="quiet-note">Tempo: {{ attempt.response_time_seconds }}s</span>
+  {% endif %}
+</form>
